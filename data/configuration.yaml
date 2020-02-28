@@ -7,7 +7,7 @@ permit_join: true
 # MQTT settings
 mqtt:
   # MQTT base topic for zigbee2mqtt MQTT messages
-  base_topic: zigbee2mqtt
+  base_topic: /devices
   # MQTT server URL
   server: 'mqtt://localhost'
   # MQTT server authentication, uncomment if required:
@@ -17,4 +17,10 @@ mqtt:
 # Serial settings
 serial:
   # Location of CC2531 USB sniffer
-  port: /dev/ttyACM0
+  port: /dev/ttyMOD3
+
+advanced:
+  # Если вы используете CC2530 или модуль WBE2R-R-ZIGBEE. (удалите этот параметр, если используете USB стик CC2531)
+  rtscts: false
+  # штамп времени
+  last_seen: epoch
