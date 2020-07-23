@@ -36,7 +36,7 @@ describe('Bridge', () => {
         const version = await require('../lib/util/utils').getZigbee2mqttVersion();
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/info',
-          JSON.stringify({"version":version.version,"commit":version.commitHash,"coordinator":{"type":"z-Stack","meta":{"version":1,"revision":20190425}},"logLevel":"info","permitJoin":false}),
+          JSON.stringify({"version":version.version,"commit":version.commitHash,"coordinator":{"type":"z-Stack","meta":{"version":1,"revision":20190425}},"log_level":"info","permit_join":false}),
           { retain: true, qos: 0 },
           expect.any(Function)
         );
@@ -45,7 +45,7 @@ describe('Bridge', () => {
     it('Should publish devices on startup', async () => {
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/devices',
-          JSON.stringify([{"ieeeAddress":"0x000b57fffec6a5b2","type":"Router","networkAddress":40369,"supported":true,"friendlyName":"bulb","definition":{"model":"LED1545G12","vendor":"IKEA","description":"TRADFRI LED bulb E26/E27 980 lumen, dimmable, white spectrum, opal white","supports":"on/off, brightness, color temperature"},"powerSource":"Mains (single phase)","dateCode":null,"interviewing":false,"interviewCompleted":true},{"ieeeAddress":"0x0017880104e45518","type":"EndDevice","networkAddress":6536,"supported":false,"friendlyName":"0x0017880104e45518","definition":null,"powerSource":"Battery","dateCode":null,"interviewing":false,"interviewCompleted":true}]),
+          JSON.stringify([{"ieee_address":"0x000b57fffec6a5b2","type":"Router","network_address":40369,"supported":true,"friendly_name":"bulb","definition":{"model":"LED1545G12","vendor":"IKEA","description":"TRADFRI LED bulb E26/E27 980 lumen, dimmable, white spectrum, opal white","supports":"on/off, brightness, color temperature"},"power_source":"Mains (single phase)","date_code":null,"interviewing":false,"interview_completed":true},{"ieee_address":"0x0017880104e45518","type":"EndDevice","network_address":6536,"supported":false,"friendly_name":"0x0017880104e45518","definition":null,"power_source":"Battery","date_code":null,"interviewing":false,"interview_completed":true}]),
           { retain: true, qos: 0 },
           expect.any(Function)
         );
@@ -54,7 +54,7 @@ describe('Bridge', () => {
     it('Should publish devices on startup', async () => {
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/groups',
-          JSON.stringify([{"ID":1,"friendlyName":"group_1","members":[]},{"ID":15071,"friendlyName":"group_tradfri_remote","members":[]},{"ID":99,"friendlyName":99,"members":[]},{"ID":11,"friendlyName":"group_with_tradfri","members":[]},{"ID":2,"friendlyName":"group_2","members":[]}]),
+          JSON.stringify([{"id":1,"friendly_name":"group_1","members":[]},{"id":15071,"friendly_name":"group_tradfri_remote","members":[]},{"id":99,"friendly_name":99,"members":[]},{"id":11,"friendly_name":"group_with_tradfri","members":[]},{"id":2,"friendly_name":"group_2","members":[]}]),
           { retain: true, qos: 0 },
           expect.any(Function)
         );
@@ -67,7 +67,7 @@ describe('Bridge', () => {
         expect(MQTT.publish).toHaveBeenCalledTimes(1);
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/event',
-          JSON.stringify({"type":"deviceJoined","data":{"friendlyName":"bulb","ieeeAddress":"0x000b57fffec6a5b2"}}),
+          JSON.stringify({"type":"device_joined","data":{"friendly_name":"bulb","ieee_address":"0x000b57fffec6a5b2"}}),
           { retain: false, qos: 0 },
           expect.any(Function)
         );
@@ -80,7 +80,7 @@ describe('Bridge', () => {
         expect(MQTT.publish).toHaveBeenCalledTimes(1);
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/event',
-          JSON.stringify({"type":"deviceInterview","data":{"friendlyName":"bulb","status":"started","ieeeAddress":"0x000b57fffec6a5b2"}}),
+          JSON.stringify({"type":"device_interview","data":{"friendly_name":"bulb","status":"started","ieee_address":"0x000b57fffec6a5b2"}}),
           { retain: false, qos: 0 },
           expect.any(Function)
         );
@@ -93,7 +93,7 @@ describe('Bridge', () => {
         expect(MQTT.publish).toHaveBeenCalledTimes(2);
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/event',
-          JSON.stringify({"type":"deviceInterview","data":{"friendlyName":"bulb","status":"failed","ieeeAddress":"0x000b57fffec6a5b2"}}),
+          JSON.stringify({"type":"device_interview","data":{"friendly_name":"bulb","status":"failed","ieee_address":"0x000b57fffec6a5b2"}}),
           { retain: false, qos: 0 },
           expect.any(Function)
         );
@@ -113,13 +113,13 @@ describe('Bridge', () => {
         expect(MQTT.publish).toHaveBeenCalledTimes(4);
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/event',
-            JSON.stringify({"type":"deviceInterview","data":{"friendlyName":"bulb","status":"successful","ieeeAddress":"0x000b57fffec6a5b2","supported":true,"definition":{"model":"LED1545G12","vendor":"IKEA","description":"TRADFRI LED bulb E26/E27 980 lumen, dimmable, white spectrum, opal white","supports":"on/off, brightness, color temperature"}}}),
+            JSON.stringify({"type":"device_interview","data":{"friendly_name":"bulb","status":"successful","ieee_address":"0x000b57fffec6a5b2","supported":true,"definition":{"model":"LED1545G12","vendor":"IKEA","description":"TRADFRI LED bulb E26/E27 980 lumen, dimmable, white spectrum, opal white","supports":"on/off, brightness, color temperature"}}}),
             { retain: false, qos: 0 },
             expect.any(Function)
         );
         expect(MQTT.publish).toHaveBeenCalledWith(
           'zigbee2mqtt/bridge/event',
-            JSON.stringify({"type":"deviceInterview","data":{"friendlyName":"0x0017880104e45518","status":"successful","ieeeAddress":"0x0017880104e45518","supported":false,"definition":null}}),
+            JSON.stringify({"type":"device_interview","data":{"friendly_name":"0x0017880104e45518","status":"successful","ieee_address":"0x0017880104e45518","supported":false,"definition":null}}),
             { retain: false, qos: 0 },
             expect.any(Function)
         );
@@ -138,7 +138,7 @@ describe('Bridge', () => {
         expect(MQTT.publish).toHaveBeenCalledTimes(2);
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/event',
-          JSON.stringify({"type":"deviceLeave","data":{"ieeeAddress":"0x000b57fffec6a5b2"}}),
+          JSON.stringify({"type":"device_leave","data":{"ieee_address":"0x000b57fffec6a5b2"}}),
           { retain: false, qos: 0 },
           expect.any(Function)
         );
@@ -153,26 +153,26 @@ describe('Bridge', () => {
     it('Should allow permit join', async () => {
         zigbeeHerdsman.permitJoin.mockClear();
         MQTT.publish.mockClear();
-        MQTT.events.message('zigbee2mqtt/bridge/request/permitJoin', 'true');
+        MQTT.events.message('zigbee2mqtt/bridge/request/permit_join', 'true');
         await flushPromises();
         expect(zigbeeHerdsman.permitJoin).toHaveBeenCalledTimes(1);
         expect(zigbeeHerdsman.permitJoin).toHaveBeenCalledWith(true);
         expect(MQTT.publish).toHaveBeenCalledWith('zigbee2mqtt/bridge/info', expect.any(String), { retain: true, qos: 0 }, expect.any(Function));
         expect(MQTT.publish).toHaveBeenCalledWith(
-            'zigbee2mqtt/bridge/response/permitJoin',
+            'zigbee2mqtt/bridge/response/permit_join',
             JSON.stringify({"data":{"value":true},"status":"ok"}),
             {retain: false, qos: 0}, expect.any(Function)
         );
 
         zigbeeHerdsman.permitJoin.mockClear();
         MQTT.publish.mockClear();
-        MQTT.events.message('zigbee2mqtt/bridge/request/permitJoin', JSON.stringify({"value": false}));
+        MQTT.events.message('zigbee2mqtt/bridge/request/permit_join', JSON.stringify({"value": false}));
         await flushPromises();
         expect(zigbeeHerdsman.permitJoin).toHaveBeenCalledTimes(1);
         expect(zigbeeHerdsman.permitJoin).toHaveBeenCalledWith(false);
         expect(MQTT.publish).toHaveBeenCalledWith('zigbee2mqtt/bridge/info', expect.any(String), { retain: true, qos: 0 }, expect.any(Function));
         expect(MQTT.publish).toHaveBeenCalledWith(
-            'zigbee2mqtt/bridge/response/permitJoin',
+            'zigbee2mqtt/bridge/response/permit_join',
             JSON.stringify({"data":{"value":false},"status":"ok"}),
             {retain: false, qos: 0}, expect.any(Function)
         );
@@ -180,10 +180,10 @@ describe('Bridge', () => {
 
     it('Should put transaction in response when request is done with transaction', async () => {
         MQTT.publish.mockClear();
-        MQTT.events.message('zigbee2mqtt/bridge/request/permitJoin', JSON.stringify({"value": false, "transaction": 22}));
+        MQTT.events.message('zigbee2mqtt/bridge/request/permit_join', JSON.stringify({"value": false, "transaction": 22}));
         await flushPromises();
         expect(MQTT.publish).toHaveBeenCalledWith(
-            'zigbee2mqtt/bridge/response/permitJoin',
+            'zigbee2mqtt/bridge/response/permit_join',
             JSON.stringify({"data":{"value":false},"status":"ok", "transaction": 22}),
             {retain: false, qos: 0}, expect.any(Function)
         );
@@ -192,10 +192,10 @@ describe('Bridge', () => {
     it('Should put error in response when request fails', async () => {
         zigbeeHerdsman.permitJoin.mockImplementationOnce(() => {throw new Error('Failed to connect to adapter')});
         MQTT.publish.mockClear();
-        MQTT.events.message('zigbee2mqtt/bridge/request/permitJoin', JSON.stringify({"value": false}));
+        MQTT.events.message('zigbee2mqtt/bridge/request/permit_join', JSON.stringify({"value": false}));
         await flushPromises();
         expect(MQTT.publish).toHaveBeenCalledWith(
-            'zigbee2mqtt/bridge/response/permitJoin',
+            'zigbee2mqtt/bridge/response/permit_join',
             JSON.stringify({"data":{},"status":"error","error": "Failed to connect to adapter"}),
             {retain: false, qos: 0}, expect.any(Function)
         );
@@ -203,10 +203,10 @@ describe('Bridge', () => {
 
     it('Should put error in response when format is incorrect', async () => {
         MQTT.publish.mockClear();
-        MQTT.events.message('zigbee2mqtt/bridge/request/permitJoin', JSON.stringify({"value_not_good": false}));
+        MQTT.events.message('zigbee2mqtt/bridge/request/permit_join', JSON.stringify({"value_not_good": false}));
         await flushPromises();
         expect(MQTT.publish).toHaveBeenCalledWith(
-            'zigbee2mqtt/bridge/response/permitJoin',
+            'zigbee2mqtt/bridge/response/permit_join',
             JSON.stringify({"data":{},"status":"error","error": "No value given"}),
             {retain: false, qos: 0}, expect.any(Function)
         );
@@ -218,6 +218,17 @@ describe('Bridge', () => {
         const device = zigbeeHerdsman.devices.bulb;
         await zigbeeHerdsman.events.message({data: {onOff: 1}, cluster: 'genOnOff', device, endpoint: device.getEndpoint(1), type: 'attributeReport', linkquality: 10});
         await flushPromises();
+    });
+
+    it('Should allow a healthcheck', async () => {
+        MQTT.publish.mockClear();
+        MQTT.events.message('zigbee2mqtt/bridge/request/health_check', '');
+        await flushPromises();
+        expect(MQTT.publish).toHaveBeenCalledWith(
+            'zigbee2mqtt/bridge/response/health_check',
+            JSON.stringify({"data":{"healthy": true},"status":"ok"}),
+            {retain: false, qos: 0}, expect.any(Function)
+        );
     });
 
     it('Should allow to remove device by string', async () => {
@@ -233,16 +244,16 @@ describe('Bridge', () => {
         expect(MQTT.publish).toHaveBeenCalledWith('zigbee2mqtt/bridge/devices', expect.any(String), expect.any(Object), expect.any(Function));
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/response/device/remove',
-            JSON.stringify({"data":{"ID": "bulb","ban":false,"force":false},"status":"ok"}),
+            JSON.stringify({"data":{"id": "bulb","block":false,"force":false},"status":"ok"}),
             {retain: false, qos: 0}, expect.any(Function)
         );
-        expect(settings.get().ban).toStrictEqual([]);
+        expect(settings.get().blocklist).toStrictEqual([]);
     });
 
     it('Should allow to remove device by object ID', async () => {
         const device = zigbeeHerdsman.devices.bulb;
         MQTT.publish.mockClear();
-        MQTT.events.message('zigbee2mqtt/bridge/request/device/remove', JSON.stringify({ID: "bulb"}));
+        MQTT.events.message('zigbee2mqtt/bridge/request/device/remove', JSON.stringify({id: "bulb"}));
         await flushPromises();
         expect(device.removeFromNetwork).toHaveBeenCalledTimes(1);
         expect(device.removeFromDatabase).not.toHaveBeenCalled();
@@ -250,7 +261,7 @@ describe('Bridge', () => {
         expect(MQTT.publish).toHaveBeenCalledWith('zigbee2mqtt/bridge/devices', expect.any(String), expect.any(Object), expect.any(Function));
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/response/device/remove',
-            JSON.stringify({"data":{"ID": "bulb","ban":false,"force":false},"status":"ok"}),
+            JSON.stringify({"data":{"id": "bulb","block":false,"force":false},"status":"ok"}),
             {retain: false, qos: 0}, expect.any(Function)
         );
     });
@@ -258,7 +269,7 @@ describe('Bridge', () => {
     it('Should allow to force remove device', async () => {
         const device = zigbeeHerdsman.devices.bulb;
         MQTT.publish.mockClear();
-        MQTT.events.message('zigbee2mqtt/bridge/request/device/remove', JSON.stringify({ID: "bulb", force: true}));
+        MQTT.events.message('zigbee2mqtt/bridge/request/device/remove', JSON.stringify({id: "bulb", force: true}));
         await flushPromises();
         expect(device.removeFromDatabase).toHaveBeenCalledTimes(1);
         expect(device.removeFromNetwork).not.toHaveBeenCalled();
@@ -266,25 +277,25 @@ describe('Bridge', () => {
         expect(MQTT.publish).toHaveBeenCalledWith('zigbee2mqtt/bridge/devices', expect.any(String), expect.any(Object), expect.any(Function));
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/response/device/remove',
-            JSON.stringify({"data":{"ID": "bulb","ban":false,"force":true},"status":"ok"}),
+            JSON.stringify({"data":{"id": "bulb","block":false,"force":true},"status":"ok"}),
             {retain: false, qos: 0}, expect.any(Function)
         );
     });
 
-    it('Should allow to ban device', async () => {
+    it('Should allow to block device', async () => {
         const device = zigbeeHerdsman.devices.bulb;
         MQTT.publish.mockClear();
-        MQTT.events.message('zigbee2mqtt/bridge/request/device/remove', JSON.stringify({ID: "bulb", ban: true, force: true}));
+        MQTT.events.message('zigbee2mqtt/bridge/request/device/remove', JSON.stringify({id: "bulb", block: true, force: true}));
         await flushPromises();
         expect(device.removeFromDatabase).toHaveBeenCalledTimes(1);
         expect(settings.getDevice('bulb')).toBeNull();
         expect(MQTT.publish).toHaveBeenCalledWith('zigbee2mqtt/bridge/devices', expect.any(String), expect.any(Object), expect.any(Function));
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/response/device/remove',
-            JSON.stringify({"data":{"ID": "bulb","ban":true,"force":true},"status":"ok"}),
+            JSON.stringify({"data":{"id": "bulb","block":true,"force":true},"status":"ok"}),
             {retain: false, qos: 0}, expect.any(Function)
         );
-        expect(settings.get().ban).toStrictEqual(["0x000b57fffec6a5b2"]);
+        expect(settings.get().blocklist).toStrictEqual(["0x000b57fffec6a5b2"]);
     });
 
     it('Should allow to remove group', async () => {
@@ -292,12 +303,27 @@ describe('Bridge', () => {
         MQTT.publish.mockClear();
         MQTT.events.message('zigbee2mqtt/bridge/request/group/remove', 'group_1');
         await flushPromises();
+        expect(group.removeFromNetwork).toHaveBeenCalledTimes(1);
+        expect(settings.getGroup('group_1')).toBeNull();
+        expect(MQTT.publish).toHaveBeenCalledWith('zigbee2mqtt/bridge/groups', expect.any(String), expect.any(Object), expect.any(Function));
+        expect(MQTT.publish).toHaveBeenCalledWith(
+            'zigbee2mqtt/bridge/response/group/remove',
+            JSON.stringify({"data":{"id": "group_1", "force": false},"status":"ok"}),
+            {retain: false, qos: 0}, expect.any(Function)
+        );
+    });
+
+    it('Should allow to force remove group', async () => {
+        const group = zigbeeHerdsman.groups.group_1;
+        MQTT.publish.mockClear();
+        MQTT.events.message('zigbee2mqtt/bridge/request/group/remove', JSON.stringify({id: "group_1", force: true}));
+        await flushPromises();
         expect(group.removeFromDatabase).toHaveBeenCalledTimes(1);
         expect(settings.getGroup('group_1')).toBeNull();
         expect(MQTT.publish).toHaveBeenCalledWith('zigbee2mqtt/bridge/groups', expect.any(String), expect.any(Object), expect.any(Function));
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/response/group/remove',
-            JSON.stringify({"data":{"ID": "group_1"},"status":"ok"}),
+            JSON.stringify({"data":{"id": "group_1", "force": true},"status":"ok"}),
             {retain: false, qos: 0}, expect.any(Function)
         );
     });
@@ -305,7 +331,7 @@ describe('Bridge', () => {
     it('Should throw error on removing non-existing device', async () => {
         const device = zigbeeHerdsman.devices.bulb;
         MQTT.publish.mockClear();
-        MQTT.events.message('zigbee2mqtt/bridge/request/device/remove', JSON.stringify({ID: "non-existing-device"}));
+        MQTT.events.message('zigbee2mqtt/bridge/request/device/remove', JSON.stringify({id: "non-existing-device"}));
         await flushPromises();
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/response/device/remove',
@@ -318,11 +344,11 @@ describe('Bridge', () => {
         const device = zigbeeHerdsman.devices.bulb;
         MQTT.publish.mockClear();
         device.removeFromNetwork.mockImplementationOnce(() => {throw new Error('device timeout')})
-        MQTT.events.message('zigbee2mqtt/bridge/request/device/remove', JSON.stringify({ID: "bulb"}));
+        MQTT.events.message('zigbee2mqtt/bridge/request/device/remove', JSON.stringify({id: "bulb"}));
         await flushPromises();
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/response/device/remove',
-            JSON.stringify({"data":{},"status":"error","error":"Failed to remove device 'bulb' (ban: false, force: false) (Error: device timeout)"}),
+            JSON.stringify({"data":{},"status":"error","error":"Failed to remove device 'bulb' (block: false, force: false) (Error: device timeout)"}),
             {retain: false, qos: 0}, expect.any(Function)
         );
     });
@@ -332,7 +358,7 @@ describe('Bridge', () => {
         MQTT.events.message('zigbee2mqtt/bridge/request/device/rename', JSON.stringify({from: 'bulb', to: 'bulb_new_name'}));
         await flushPromises();
         expect(settings.getDevice('bulb')).toBeNull();
-        expect(settings.getDevice('bulb_new_name')).toStrictEqual({"ID": "0x000b57fffec6a5b2", "friendlyName": "bulb_new_name", "friendly_name": "bulb_new_name", "retain": true});
+        expect(settings.getDevice('bulb_new_name')).toStrictEqual({"ID": "0x000b57fffec6a5b2", "friendly_name": "bulb_new_name", "friendlyName": "bulb_new_name", "retain": true});
         expect(MQTT.publish).toHaveBeenCalledWith('zigbee2mqtt/bridge/devices', expect.any(String), expect.any(Object), expect.any(Function));
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/response/device/rename',
@@ -346,7 +372,7 @@ describe('Bridge', () => {
         MQTT.events.message('zigbee2mqtt/bridge/request/group/rename', JSON.stringify({from: 'group_1', to: 'group_new_name'}));
         await flushPromises();
         expect(settings.getGroup('group_1')).toBeNull();
-        expect(settings.getGroup('group_new_name')).toStrictEqual({"ID": 1, "devices": [], "friendlyName": "group_new_name", "friendly_name": "group_new_name", "optimistic": true, "retain": false});
+        expect(settings.getGroup('group_new_name')).toStrictEqual({"ID": 1, "devices": [], "friendly_name": "group_new_name", "friendlyName": "group_new_name", "optimistic": true, "retain": false});
         expect(MQTT.publish).toHaveBeenCalledWith('zigbee2mqtt/bridge/groups', expect.any(String), expect.any(Object), expect.any(Function));
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/response/group/rename',
@@ -383,7 +409,7 @@ describe('Bridge', () => {
         MQTT.events.message('zigbee2mqtt/bridge/request/device/rename', JSON.stringify({last: true, to: 'bulb_new_name'}));
         await flushPromises();
         expect(settings.getDevice('bulb')).toBeNull();
-        expect(settings.getDevice('bulb_new_name')).toStrictEqual({"ID": "0x000b57fffec6a5b2", "friendlyName": "bulb_new_name", "friendly_name": "bulb_new_name", "retain": true});
+        expect(settings.getDevice('bulb_new_name')).toStrictEqual({"ID": "0x000b57fffec6a5b2", "friendly_name": "bulb_new_name", "friendlyName": "bulb_new_name", "retain": true});
         expect(MQTT.publish).toHaveBeenCalledWith('zigbee2mqtt/bridge/devices', expect.any(String), expect.any(Object), expect.any(Function));
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/response/device/rename',
@@ -405,13 +431,13 @@ describe('Bridge', () => {
 
     it('Should allow change device options', async () => {
         MQTT.publish.mockClear();
-        expect(settings.getDevice('bulb')).toStrictEqual({"ID": "0x000b57fffec6a5b2", "friendlyName": "bulb", "friendly_name": "bulb", "retain": true});
-        MQTT.events.message('zigbee2mqtt/bridge/request/device/options', JSON.stringify({options: {retain: false, transition: 1}, ID: 'bulb'}));
+        expect(settings.getDevice('bulb')).toStrictEqual({"ID": "0x000b57fffec6a5b2", "friendly_name": "bulb", "friendlyName": "bulb", "retain": true});
+        MQTT.events.message('zigbee2mqtt/bridge/request/device/options', JSON.stringify({options: {retain: false, transition: 1}, id: 'bulb'}));
         await flushPromises();
-        expect(settings.getDevice('bulb')).toStrictEqual({"ID": "0x000b57fffec6a5b2", "friendlyName": "bulb", "friendly_name": "bulb", "retain": false, "transition": 1});
+        expect(settings.getDevice('bulb')).toStrictEqual({"ID": "0x000b57fffec6a5b2", "friendly_name": "bulb", "friendlyName": "bulb", "retain": false, "transition": 1});
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/response/device/options',
-            JSON.stringify({"data":{"from":{"retain": true},"to":{"retain": false,"transition":1}, "ID":"bulb"},"status":"ok"}),
+            JSON.stringify({"data":{"from":{"retain": true},"to":{"retain": false,"transition":1}, "id":"bulb"},"status":"ok"}),
             {retain: false, qos: 0}, expect.any(Function)
         );
     });
@@ -419,19 +445,19 @@ describe('Bridge', () => {
     it('Should allow change group options', async () => {
         MQTT.publish.mockClear();
         expect(settings.getGroup('group_1')).toStrictEqual({"ID": 1, "devices": [], "friendly_name": "group_1", "retain": false, "friendlyName": "group_1", "optimistic": true});
-        MQTT.events.message('zigbee2mqtt/bridge/request/group/options', JSON.stringify({options: {retain: true, transition: 1}, ID: 'group_1'}));
+        MQTT.events.message('zigbee2mqtt/bridge/request/group/options', JSON.stringify({options: {retain: true, transition: 1}, id: 'group_1'}));
         await flushPromises();
         expect(settings.getGroup('group_1')).toStrictEqual({"ID": 1, "devices": [], "friendly_name": "group_1", "retain": true, "friendlyName": "group_1", "optimistic": true, "transition": 1});
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/response/group/options',
-            JSON.stringify({"data":{"from":{"optimistic": true,"retain": false},"to":{"optimistic": true,"retain": true,"transition":1}, "ID":"group_1"},"status":"ok"}),
+            JSON.stringify({"data":{"from":{"optimistic": true,"retain": false},"to":{"optimistic": true,"retain": true,"transition":1}, "id":"group_1"},"status":"ok"}),
             {retain: false, qos: 0}, expect.any(Function)
         );
     });
 
     it('Should throw error on invalid device change options payload', async () => {
         MQTT.publish.mockClear();
-        MQTT.events.message('zigbee2mqtt/bridge/request/device/options', JSON.stringify({options_: {retain: true, transition: 1}, ID: 'bulb'}));
+        MQTT.events.message('zigbee2mqtt/bridge/request/device/options', JSON.stringify({options_: {retain: true, transition: 1}, id: 'bulb'}));
         await flushPromises();
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/response/device/options',
@@ -444,31 +470,31 @@ describe('Bridge', () => {
         MQTT.publish.mockClear();
         MQTT.events.message('zigbee2mqtt/bridge/request/group/add', 'group_193');
         await flushPromises();
-        expect(settings.getGroup('group_193')).toStrictEqual({"ID": 3, "devices": [], "friendlyName": "group_193", "friendly_name": "group_193", "optimistic": true});
+        expect(settings.getGroup('group_193')).toStrictEqual({"ID": 3, "devices": [], "friendly_name": "group_193", "friendlyName": "group_193", "optimistic": true});
         expect(MQTT.publish).toHaveBeenCalledWith('zigbee2mqtt/bridge/groups', expect.any(String), expect.any(Object), expect.any(Function));
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/response/group/add',
-            JSON.stringify({"data":{"friendlyName":"group_193","ID": 3},"status":"ok"}),
+            JSON.stringify({"data":{"friendly_name":"group_193","id": 3},"status":"ok"}),
             {retain: false, qos: 0}, expect.any(Function)
         );
     });
 
     it('Should allow to add group with ID', async () => {
         MQTT.publish.mockClear();
-        MQTT.events.message('zigbee2mqtt/bridge/request/group/add', JSON.stringify({friendlyName: "group_193", ID: 9}));
+        MQTT.events.message('zigbee2mqtt/bridge/request/group/add', JSON.stringify({friendly_name: "group_193", id: 9}));
         await flushPromises();
-        expect(settings.getGroup('group_193')).toStrictEqual({"ID": 9, "devices": [], "friendlyName": "group_193", "friendly_name": "group_193", "optimistic": true});
+        expect(settings.getGroup('group_193')).toStrictEqual({"ID": 9, "devices": [], "friendly_name": "group_193", "friendlyName": "group_193", "optimistic": true});
         expect(MQTT.publish).toHaveBeenCalledWith('zigbee2mqtt/bridge/groups', expect.any(String), expect.any(Object), expect.any(Function));
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/response/group/add',
-            JSON.stringify({"data":{"friendlyName":"group_193","ID": 9},"status":"ok"}),
+            JSON.stringify({"data":{"friendly_name":"group_193","id": 9},"status":"ok"}),
             {retain: false, qos: 0}, expect.any(Function)
         );
     });
 
     it('Should throw error when add with invalid payload', async () => {
         MQTT.publish.mockClear();
-        MQTT.events.message('zigbee2mqtt/bridge/request/group/add', JSON.stringify({friendlyName9: "group_193"}));
+        MQTT.events.message('zigbee2mqtt/bridge/request/group/add', JSON.stringify({friendly_name9: "group_193"}));
         await flushPromises();
         expect(MQTT.publish).toHaveBeenCalledWith(
             'zigbee2mqtt/bridge/response/group/add',
@@ -479,11 +505,11 @@ describe('Bridge', () => {
 
     it('Should allow to set last_seen', async () => {
         MQTT.publish.mockClear();
-        MQTT.events.message('zigbee2mqtt/bridge/request/config/lastSeen', 'ISO_8601');
+        MQTT.events.message('zigbee2mqtt/bridge/request/config/last_seen', 'ISO_8601');
         await flushPromises();
         expect(settings.get().advanced.last_seen).toBe('ISO_8601');
         expect(MQTT.publish).toHaveBeenCalledWith(
-            'zigbee2mqtt/bridge/response/config/lastSeen',
+            'zigbee2mqtt/bridge/response/config/last_seen',
             JSON.stringify({"data":{"value":"ISO_8601"},"status":"ok"}),
             {retain: false, qos: 0}, expect.any(Function)
         );
@@ -491,11 +517,11 @@ describe('Bridge', () => {
 
     it('Should fail to set last_seen when invalid type', async () => {
         MQTT.publish.mockClear();
-        MQTT.events.message('zigbee2mqtt/bridge/request/config/lastSeen', 'invalid_one');
+        MQTT.events.message('zigbee2mqtt/bridge/request/config/last_seen', 'invalid_one');
         await flushPromises();
         expect(settings.get().advanced.last_seen).toBe('disable');
         expect(MQTT.publish).toHaveBeenCalledWith(
-            'zigbee2mqtt/bridge/response/config/lastSeen',
+            'zigbee2mqtt/bridge/response/config/last_seen',
             JSON.stringify({"data":{},"status":"error","error":"'invalid_one' is not an allowed value, allowed: disable,ISO_8601,epoch,ISO_8601_local"}),
             {retain: false, qos: 0}, expect.any(Function)
         );
@@ -527,12 +553,12 @@ describe('Bridge', () => {
 
     it('Should allow to set log level', async () => {
         MQTT.publish.mockClear();
-        MQTT.events.message('zigbee2mqtt/bridge/request/config/logLevel', 'debug');
+        MQTT.events.message('zigbee2mqtt/bridge/request/config/log_level', 'debug');
         await flushPromises();
         expect(logger.getLevel()).toBe('debug');
         expect(MQTT.publish).toHaveBeenCalledWith('zigbee2mqtt/bridge/info', expect.any(String), expect.any(Object), expect.any(Function));
         expect(MQTT.publish).toHaveBeenCalledWith(
-            'zigbee2mqtt/bridge/response/config/logLevel',
+            'zigbee2mqtt/bridge/response/config/log_level',
             JSON.stringify({"data":{"value":'debug'},"status":"ok"}),
             {retain: false, qos: 0}, expect.any(Function)
         );
@@ -540,10 +566,10 @@ describe('Bridge', () => {
 
     it('Should fail to set log level when invalid type', async () => {
         MQTT.publish.mockClear();
-        MQTT.events.message('zigbee2mqtt/bridge/request/config/logLevel', 'not_valid');
+        MQTT.events.message('zigbee2mqtt/bridge/request/config/log_level', 'not_valid');
         await flushPromises();
         expect(MQTT.publish).toHaveBeenCalledWith(
-            'zigbee2mqtt/bridge/response/config/logLevel',
+            'zigbee2mqtt/bridge/response/config/log_level',
             JSON.stringify({"data":{},"status":"error","error":"'not_valid' is not an allowed value, allowed: error,warn,info,debug"}),
             {retain: false, qos: 0}, expect.any(Function)
         );
@@ -553,11 +579,11 @@ describe('Bridge', () => {
         MQTT.publish.mockClear();
         zigbeeHerdsman.touchlinkFactoryReset.mockClear();
         zigbeeHerdsman.touchlinkFactoryReset.mockReturnValueOnce(true);
-        MQTT.events.message('zigbee2mqtt/bridge/request/touchlink/factoryReset', '');
+        MQTT.events.message('zigbee2mqtt/bridge/request/touchlink/factory_reset', '');
         await flushPromises();
         expect(zigbeeHerdsman.touchlinkFactoryReset).toHaveBeenCalledTimes(1);
         expect(MQTT.publish).toHaveBeenCalledWith(
-            'zigbee2mqtt/bridge/response/touchlink/factoryReset',
+            'zigbee2mqtt/bridge/response/touchlink/factory_reset',
             JSON.stringify({"data":{},"status":"ok"}),
             {retain: false, qos: 0}, expect.any(Function)
         );
@@ -567,11 +593,11 @@ describe('Bridge', () => {
         MQTT.publish.mockClear();
         zigbeeHerdsman.touchlinkFactoryReset.mockClear();
         zigbeeHerdsman.touchlinkFactoryReset.mockReturnValueOnce(false);
-        MQTT.events.message('zigbee2mqtt/bridge/request/touchlink/factoryReset', '');
+        MQTT.events.message('zigbee2mqtt/bridge/request/touchlink/factory_reset', '');
         await flushPromises();
         expect(zigbeeHerdsman.touchlinkFactoryReset).toHaveBeenCalledTimes(1);
         expect(MQTT.publish).toHaveBeenCalledWith(
-            'zigbee2mqtt/bridge/response/touchlink/factoryReset',
+            'zigbee2mqtt/bridge/response/touchlink/factory_reset',
             JSON.stringify({"data":{},"status":"error","error":"Failed to factory reset device through Touchlink"}),
             {retain: false, qos: 0}, expect.any(Function)
         );
