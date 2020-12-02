@@ -24,3 +24,6 @@ advanced:
   rtscts: false
   # штамп времени
   last_seen: epoch
+
+device_options:
+  retain: true
